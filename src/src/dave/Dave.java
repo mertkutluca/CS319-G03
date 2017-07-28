@@ -2,7 +2,7 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
- */
+ *//*
 package dave;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import javafx.scene.paint.Color;
 /**
  *
  * @author Sebahattin
- */
+ *//*
 public class Dave extends Application {
     
     GameController gc = new GameController();
@@ -73,7 +73,7 @@ public class Dave extends Application {
         StaticGameObject brick7 = new StaticGameObject(458.0, 410.0, "/brick.png");
         StaticGameObject brick8 = new StaticGameObject(522.0, 410.0, "/brick.png");
         StaticGameObject brick9 = new StaticGameObject(330.0, 282.0, "/brick.png");
-        */
+        *//*
         new AnimationTimer()
         {
             public void handle(long currentNanoTime)
@@ -98,9 +98,10 @@ public class Dave extends Application {
     }
     /**
      * @param args the command line arguments
-     */
+     *//*
     public static void main(String[] args) {
         launch(args);
     }
     
 }
+*/
