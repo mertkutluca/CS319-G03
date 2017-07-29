@@ -12,6 +12,7 @@ package Entity_Objects;
 public class Bullet extends DynamicGameObject {
     
     private final int damage = 10;
+    public String dir;
     
     public Bullet(double X, double Y, String I) {
         super(X, Y, I);
@@ -21,4 +22,11 @@ public class Bullet extends DynamicGameObject {
         return damage;
     }
     
+    public void setDirection(String dir){
+        this.dir = dir;
+    }
+    
+    public String getDirection(){
+        return this.dir;
+    }
 }

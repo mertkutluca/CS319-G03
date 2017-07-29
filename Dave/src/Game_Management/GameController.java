@@ -29,7 +29,7 @@ public class GameController {
     }
     
     public void fillList(){
-        Player player = new Player(200.0, 346.0, "/davepic.png");
+        Player player = new Player(200.0, 346.0, "/dave_right.png");
         gameObjectList.add(player);
         Gun gun = new Gun(778.0, 346.0, "/gun.png");
         gameObjectList.add(gun);
@@ -68,20 +68,26 @@ public class GameController {
     }
     
     public void moveAllObjects() {
+        int p1 = 0;
         for (int i = 0; i < gameObjectList.size(); i++) {
             if (gameObjectList.get(i) instanceof Player) {
                 ((Player)gameObjectList.get(i)).move(pressedButtonsList);
+                p1 = i;
             }
             if (gameObjectList.get(i) instanceof Bullet) {
-                ((Bullet)gameObjectList.get(i)).move("J");
+                ((Bullet)gameObjectList.get(i)).move(((Bullet)gameObjectList.get(i)).getDirection());
             }
         }
     }
     
     public void slideMap(double direction) {
         for (int i = 0; i < gameObjectList.size(); i++) {
-            if (!(gameObjectList.get(i) instanceof DynamicGameObject)) {
-                ((StaticGameObject)gameObjectList.get(i)).posX += (5.0 * direction);
+            if (!(gameObjectList.get(i) instanceof Player)) {
+                if(gameObjectList.get(i) instanceof Bullet){
+                    ((DynamicGameObject)gameObjectList.get(i)).posX += (5.0 * direction);
+                } else {
+                    ((StaticGameObject)gameObjectList.get(i)).posX += (5.0 * direction);
+                }
             }
         }
     }
@@ -101,7 +107,9 @@ public class GameController {
                 if (obj2 instanceof ObtainableStaticGameObject) {
                     ((Player)obj1 ).gun = (Gun)obj2;
                     gameObjectList.remove(obj2);
-                } else {
+                } else if (obj1 instanceof Bullet){
+                    gameObjectList.remove(obj1);
+                } else{
                     obj1.setLeftCol(true);
                 }
             }
@@ -109,9 +117,11 @@ public class GameController {
                 if (obj2 instanceof ObtainableStaticGameObject) {
                     ((Player)obj1 ).gun = (Gun)obj2;
                     gameObjectList.remove(obj2);
+                } else if (obj1 instanceof Bullet){
+                    gameObjectList.remove(obj1);
                 } else {
                     obj1.setRightCol(true);
-                }           
+                }
             }
         }
         

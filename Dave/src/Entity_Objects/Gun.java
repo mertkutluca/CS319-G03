@@ -21,15 +21,19 @@ public class Gun extends ObtainableStaticGameObject {
         super(X, Y, I);
         bullets = new ArrayList<>();
         this.bulletImagePath = "/bullet.png";
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 50; i++)
             bullets.add(new Bullet(X,Y,"/bullet.png"));
     }
     
-    public void shoot() {
-       // if (!bullets.isEmpty()) {
-            GuiManager.gameController.gameObjectList.add(bullets.get(0));
-            //bullets.remove(bullets.size()-1);
-       // }
+    public void shoot(double posX, double posY,String dir) {
+        if (!bullets.isEmpty()) {
+            bullets.get(bullets.size()-1).setDirection(dir);
+            (bullets.get(bullets.size()-1)).setPosX(posX);
+            (bullets.get(bullets.size()-1)).setPosY(posY);
+            GuiManager.gameController.gameObjectList.add(bullets.get(bullets.size()-1));
+            bullets.remove(bullets.size()-1);
+            
+        }
     }
     
 }

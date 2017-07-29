@@ -16,7 +16,7 @@ import javafx.scene.input.KeyEvent;
  */
 public class InputManager {
     ArrayList<String> buttonList;
-    
+    boolean space = false;
     public InputManager(){
         buttonList = new ArrayList<String>();
           /*  
@@ -53,7 +53,7 @@ public class InputManager {
 	            {
 	                String code = e.getCode().toString();
 	                if(!GuiManager.gameController.pressedButtonsList.contains(code))
-                            GuiManager.gameController.pressedButtonsList.add(code);	
+                            GuiManager.gameController.pressedButtonsList.add(code);
 	            }
                 });
 	        
