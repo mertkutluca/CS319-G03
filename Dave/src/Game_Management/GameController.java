@@ -22,49 +22,72 @@ public class GameController {
     public ArrayList<GameObject> gameObjectList;
     public ArrayList<String> pressedButtonsList;
     private static GameController gameController;
+    private char[][] objectKeys;
+    FileManager filemanager;
     
     public GameController(){
         gameObjectList = new ArrayList<>();
         pressedButtonsList = new ArrayList<>();
+        filemanager=new FileManager(6,50);
+        objectKeys=new char[6][50];
+        filemanager.readMapFile("src/MapObjects1.txt");
+        objectKeys=filemanager.getMapObjects();
     }
     
     public void fillList(){
-        Player player = new Player(200.0, 346.0, "/dave_right.png");
-        gameObjectList.add(player);
-        Gun gun = new Gun(778.0, 346.0, "/gun.png");
-        gameObjectList.add(gun);
-        StaticGameObject brick1 = new StaticGameObject(138.0, 410.0, "/brick.png");
-        gameObjectList.add(brick1);
-        StaticGameObject brick2 = new StaticGameObject(10.0, 410.0, "/brick.png");
-        gameObjectList.add(brick2);
-        StaticGameObject brick3 = new StaticGameObject(202.0, 410.0, "/brick.png");
-        gameObjectList.add(brick3);
-        StaticGameObject brick4 = new StaticGameObject(330.0, 346.0, "/brick.png");
-        gameObjectList.add(brick4);
-        StaticGameObject brick5 = new StaticGameObject(266.0, 346.0, "/brick.png");
-        gameObjectList.add(brick5);
-        StaticGameObject brick6 = new StaticGameObject(394.0, 410.0, "/brick.png");
-        gameObjectList.add(brick6);
-        StaticGameObject brick7 = new StaticGameObject(458.0, 410.0, "/brick.png");
-        gameObjectList.add(brick7);
-        StaticGameObject brick8 = new StaticGameObject(522.0, 410.0, "/brick.png");
-        gameObjectList.add(brick8);
-        StaticGameObject brick9 = new StaticGameObject(330.0, 282.0, "/brick.png");
-        gameObjectList.add(brick9);
-        StaticGameObject brick10 = new StaticGameObject(586.0, 410.0, "/brick.png");
-        gameObjectList.add(brick10);
-        StaticGameObject brick11 = new StaticGameObject(650.0, 410.0, "/brick.png");
-        gameObjectList.add(brick11);
-        StaticGameObject brick12 = new StaticGameObject(714.0, 410.0, "/brick.png");
-        gameObjectList.add(brick12);
-        StaticGameObject brick13 = new StaticGameObject(778.0, 410.0, "/brick.png");
-        gameObjectList.add(brick13);
-        StaticGameObject brick14 = new StaticGameObject(842.0, 410.0, "/brick.png");
-        gameObjectList.add(brick14);
-        StaticGameObject brick15 = new StaticGameObject(906.0, 410.0, "/brick.png");
-        gameObjectList.add(brick15);
-        StaticGameObject brick16 = new StaticGameObject(650.0, 218.0, "/brick.png");
-        gameObjectList.add(brick16);
+        GameObject object;
+    	for(int i=0;i<6;i++){
+    		for(int j=0;j<50;j++){
+    			object=createObject((char)objectKeys[i][j],i,j);
+    			if(object!=null)
+    				gameObjectList.add(object);
+    		}
+    	}
+    }
+    
+    public GameObject createObject(char key, int y, int x){
+    	if(key==0){
+    		return null;
+    	}else if(key=='1'){
+        	StaticGameObject gameObject = new StaticGameObject(x*64, y*64, "/brick.png");
+        	return gameObject;
+    	}else if(key==2){
+    		return null;
+    	}else if(key==3){
+    		return null;
+    	}else if(key==4){
+    		return null;
+    	}else if(key==5){
+    		return null;
+    	}else if(key==6){
+    		return null;
+    	}else if(key==7){
+    		return null;
+    	}else if(key==8){
+    		return null;
+    	}else if(key==9){
+    		return null;
+    	}else if(key=='a'){
+    		return null;
+    	}else if(key=='b'){
+    		 Gun gun = new Gun(x*64, y*64, "/gun.png");
+    		 return gun;
+    	}else if(key=='c'){
+    		return null;
+    	}else if(key=='d'){
+    		 Player player = new Player(x*64, y*64, "/davepic.png");
+    		 return player;
+    	}else if(key=='e'){
+    		return null;
+    	}else if(key=='f'){
+    		return null;
+    	}else if(key=='g'){
+    		return null;
+    	}else if(key=='h'){
+    		return null;
+    	}else{
+    		return null;
+    	}
     }
     
     public void moveAllObjects() {
