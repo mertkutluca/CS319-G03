@@ -45,25 +45,6 @@ public class GameScene extends Scene {
         GraphicsContext g = c.getGraphicsContext2D();
         GuiManager.gameController.fillList();  
         
-        
-        Button pauseBut = new Button("P");
-        pauseBut.setLayoutY(10.0);
-        pauseBut.setLayoutX(780);
-        //pauseBut.autosize();
-        grid.getChildren().add(pauseBut);
-        
-   
-      
-        pauseBut.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-               primaryStage.setScene(GuiManager.pauseMenu); 
-                
-               }
-        });
-        
-         
-                
-        
         GuiManager.animationTimer = new AnimationTimer()
         {
             double frameTime = 0;
@@ -72,6 +53,10 @@ public class GameScene extends Scene {
             @Override
             public void handle(long currentNanoTime)
             {
+                if(GuiManager.gameController.pressedButtonsList.contains("P")){
+                     primaryStage.setScene(GuiManager.pauseMenu);
+                     GuiManager.gameController.pressedButtonsList.remove("P");
+                }
                 g.setFill(Color.BLACK);
                 g.fillRect(0, 0, c.getWidth(), c.getHeight());
                 drawAll(g);
