@@ -5,12 +5,21 @@
  */
 package Game_Management;
 
+import Entity_Objects.Blade;
+import Entity_Objects.Brick;
 import Entity_Objects.Bullet;
+import Entity_Objects.Chalice;
+import Entity_Objects.Coin;
+import Entity_Objects.Diamond;
+import Entity_Objects.Door;
 import Entity_Objects.DynamicGameObject;
 import Entity_Objects.GameObject;
 import Entity_Objects.Gun;
+import Entity_Objects.Heart;
 import Entity_Objects.ObtainableStaticGameObject;
 import Entity_Objects.Player;
+import Entity_Objects.PoisonedBrick;
+import Entity_Objects.PoisonedSeaweed;
 import Entity_Objects.StaticGameObject;
 import File_Management.FileManager;
 import java.util.ArrayList;
@@ -61,14 +70,18 @@ public class GameController {
     	}else if(key=='4'){
     		Door door=new Door(x*64,y*64,"/brick.png");
     		return door;
-    	}else if(key==5){
-    		return null;
-    	}else if(key==6){
-    		return null;
-    	}else if(key==7){
-    		return null;
-    	}else if(key==8){
-    		return null;
+    	}else if(key=='5'){
+                Coin gameObject = new Coin(x*64,y*64,"/coin.png");
+    		return gameObject;
+    	}else if(key=='6'){
+                Diamond gameObject = new Diamond(x*64,y*64,"/diamond.png");
+    		return gameObject;
+    	}else if(key=='7'){
+                Chalice gameObject = new Chalice(x*64,y*64,"/chalice.png");
+    		return gameObject;
+    	}else if(key=='8'){
+                Heart gameObject = new Heart(x*64,y*64,"/heart.png");
+    		return gameObject;
     	}else if(key==9){
     		return null;
     	}else if(key=='a'){
@@ -77,7 +90,8 @@ public class GameController {
     		 Gun gun = new Gun(x*64, y*64, "/gun.png");
     		 return gun;
     	}else if(key=='c'){
-    		return null;
+    		Blade gameObject = new Blade(x*64,y*64,"/blade.png");
+    		return gameObject;
     	}else if(key=='d'){
     		 Player player = new Player(x*64, y*64, "/dave_right.png");
     		 return player;
@@ -131,21 +145,51 @@ public class GameController {
     public void checkCollision(DynamicGameObject obj1, StaticGameObject obj2){
         if(obj1.getPosY() - obj2.getPosY() < 63 && -63 < obj1.getPosY() - obj2.getPosY()){
             if(obj1.getPosX() - obj2.getPosX() < 64 && obj1.getPosX() - obj2.getPosX() > 0) {
-                if (obj2 instanceof ObtainableStaticGameObject) {
+                if (obj2 instanceof Gun) {
                     ((Player)obj1 ).gun = (Gun)obj2;
                     gameObjectList.remove(obj2);
                 } else if (obj1 instanceof Bullet){
                     gameObjectList.remove(obj1);
-                } else{
+                } else if(obj2 instanceof Coin){
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).increasePoint(((Coin)obj2).getPoint());
+                } else if(obj2 instanceof Diamond){
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).increasePoint(((Diamond)obj2).getPoint());
+                } else if(obj2 instanceof Heart){
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).increaseHealth();
+                } else if(obj2 instanceof Chalice){
+                    gameObjectList.remove(obj2);
+                    //doldur
+                } else if (obj2 instanceof Blade) {
+                    ((Player)obj1 ).blade = (Blade)obj2;
+                    gameObjectList.remove(obj2);
+                } else {
                     obj1.setLeftCol(true);
                 }
             }
             if(obj2.getPosX() - obj1.getPosX() < 64 && obj2.getPosX() - obj1.getPosX() > 0) {
-                if (obj2 instanceof ObtainableStaticGameObject) {
+                if (obj2 instanceof Gun) {
                     ((Player)obj1 ).gun = (Gun)obj2;
                     gameObjectList.remove(obj2);
                 } else if (obj1 instanceof Bullet){
                     gameObjectList.remove(obj1);
+                } else if(obj2 instanceof Coin){
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).increasePoint(((Coin)obj2).getPoint());
+                } else if(obj2 instanceof Diamond){
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).increasePoint(((Diamond)obj2).getPoint());
+                } else if(obj2 instanceof Heart){
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).increaseHealth();
+                } else if(obj2 instanceof Chalice){
+                    gameObjectList.remove(obj2);
+                    //doldur
+                } else if (obj2 instanceof Blade) {
+                    ((Player)obj1 ).blade = (Blade)obj2;
+                    gameObjectList.remove(obj2);
                 } else {
                     obj1.setRightCol(true);
                 }
@@ -154,15 +198,49 @@ public class GameController {
         
         if(obj1.getPosX() - obj2.getPosX() < 50 && -50 < obj1.getPosX() - obj2.getPosX()){
             if(obj1.getPosY() - obj2.getPosY() < 64 && obj1.getPosY() - obj2.getPosY() > 0){
-                //obj1.setLeftCol(true);
-                obj1.setTopCol(true);
-                obj1.posY = obj2.posY + 64;
+                if(obj2 instanceof Coin){
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).increasePoint(((Coin)obj2).getPoint());
+                } else if(obj2 instanceof Diamond){
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).increasePoint(((Diamond)obj2).getPoint());
+                } else if(obj2 instanceof Heart){
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).increaseHealth();
+                } else if(obj2 instanceof Chalice){
+                    gameObjectList.remove(obj2);
+                    //doldur
+                } else if (obj2 instanceof Blade) {
+                    ((Player)obj1 ).blade = (Blade)obj2;
+                    gameObjectList.remove(obj2);
+                } else {
+                    //obj1.setLeftCol(true);
+                    obj1.setTopCol(true);
+                    obj1.posY = obj2.posY + 64;
+                }
             }               
             if(obj2.getPosY() - obj1.getPosY() < 68 && obj2.getPosY() - obj1.getPosY() > 0){
-                obj1.setBottomCol(true);
-                obj1.setSpeedY(0.0);
-                obj1.setIsJumped(false);
-                obj1.posY = obj2.posY - 64;
+                if(obj2 instanceof Coin){
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).increasePoint(((Coin)obj2).getPoint());
+                } else if(obj2 instanceof Diamond){
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).increasePoint(((Diamond)obj2).getPoint());
+                } else if(obj2 instanceof Heart){
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).increaseHealth();
+                } else if(obj2 instanceof Chalice){
+                    gameObjectList.remove(obj2);
+                    //doldur
+                } else if (obj2 instanceof Blade) {
+                    ((Player)obj1 ).blade = (Blade)obj2;
+                    gameObjectList.remove(obj2);
+                } else {
+                    obj1.setBottomCol(true);
+                    obj1.setSpeedY(0.0);
+                    obj1.setIsJumped(false);
+                    obj1.posY = obj2.posY - 64;
+                }
             }
         }
     }   

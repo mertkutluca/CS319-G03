@@ -18,10 +18,15 @@ public class Player extends DynamicGameObject {
     public Gun gun;
     Image img1,img2;
     String dir = "RIGHT";
+    public int point;
+    private int health;
+    public Blade blade;
     public Player(double X, double Y, String I) {
         super(X, Y, I);
-        img1 = new Image(I);
-        img2 = new Image("/dave_left.png");
+        this.img1 = new Image(I);
+        this.img2 = new Image("/dave_left.png");
+        this.point = 0;
+        this.health = 3;
     }
     
     public void move(ArrayList<String> keyList){  
@@ -88,5 +93,20 @@ public class Player extends DynamicGameObject {
     }
     public String getDirection(){
         return (this.dir);
+    }
+    public void increasePoint(int point){
+        this.point += point;
+    }
+    public int getPoint(){
+        return this.point;
+    }
+    public void increaseHealth(){
+        this.health++;
+    }
+    public void decreaseHealth(){
+        this.health--;
+    }
+    public int getHealth(){
+        return this.health;
     }
 }
