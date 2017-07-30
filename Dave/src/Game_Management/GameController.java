@@ -76,7 +76,7 @@ public class GameController {
     	}else if(key=='c'){
     		return null;
     	}else if(key=='d'){
-    		 Player player = new Player(x*64, y*64, "/davepic.png");
+    		 Player player = new Player(x*64, y*64, "/dave_right.png");
     		 return player;
     	}else if(key=='e'){
     		return null;
