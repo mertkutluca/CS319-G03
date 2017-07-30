@@ -10,6 +10,7 @@ import Input_Management.InputManager;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
@@ -21,7 +22,10 @@ public class GuiManager extends Application {
     public static GameController gameController;
     public static GameScene gameScene;
     public static InputManager inputManager;
-    
+    public static MainMenu mainMenu;
+    public static Help help;
+    public static Credits credits;
+    public static PauseMenu pauseMenu;
     
     public static void main(String[] args) {
 	// TODO - implement GameApplication.main
@@ -30,13 +34,22 @@ public class GuiManager extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Saving Humanity");
+        primaryStage.setTitle("More Dangerous Dave");
 	primaryStage.setResizable(false);
         
         Group group = new Group();
-	gameScene = new GameScene(group,primaryStage);
-        primaryStage.setScene(gameScene);
-        animationTimer.start();
+        GridPane grid = new GridPane();
+        GridPane grid2 = new GridPane();
+        GridPane grid3 = new GridPane();
+        GridPane grid4 = new GridPane();
+        GridPane grid5 = new GridPane();
+        pauseMenu = new PauseMenu(grid5, primaryStage);
+        credits = new Credits(grid4, primaryStage);
+        help = new Help(grid3, primaryStage);
+        gameScene = new GameScene(grid,primaryStage);
+	mainMenu = new MainMenu(grid2,primaryStage);
+        primaryStage.setScene(mainMenu);
+      //  animationTimer.start();
         primaryStage.show();
     }
 }
