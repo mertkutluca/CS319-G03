@@ -7,6 +7,7 @@ package Entity_Objects;
 
 import User_Interface.GuiManager;
 import java.util.ArrayList;
+import javafx.animation.Animation;
 import javafx.scene.image.Image;
 
 /**
@@ -14,19 +15,17 @@ import javafx.scene.image.Image;
  * @author Sebahattin
  */
 public class Player extends DynamicGameObject {
-    
     public Gun gun;
-    Image img1,img2;
+    Image img1, img2, img3, img4;
+    Image images[];
     String dir = "RIGHT";
-    public int point;
-    private int health;
-    public Blade blade;
+
     public Player(double X, double Y, String I) {
         super(X, Y, I);
-        this.img1 = new Image(I);
-        this.img2 = new Image("/dave_left.png");
-        this.point = 0;
-        this.health = 3;
+        img1 = new Image(I);
+        img2 = new Image("/dave_left.png");
+        img3 = new Image("/leftruNer.png");
+        img4 = new Image("/rightrun.png");
     }
     
     public void move(ArrayList<String> keyList){  
@@ -47,10 +46,12 @@ public class Player extends DynamicGameObject {
         else{}
         if(keyList.contains("RIGHT")){
             this.setPlayerDirection("RIGHT");
+            runRightAnimation();
             leftCol = false;
         }
         if(keyList.contains("LEFT")){
             this.setPlayerDirection("LEFT");
+            runLeftAnimation();
             rightCol = false;
         }
         if(keyList.contains("UP") && !isJumped){
@@ -94,19 +95,22 @@ public class Player extends DynamicGameObject {
     public String getDirection(){
         return (this.dir);
     }
-    public void increasePoint(int point){
-        this.point += point;
+    public void runRightAnimation(){
+        this.setImage(img4);
+        if(System.nanoTime() % 400000000 > 200000000) {
+            this.setImage(img4);     
+        }
+        else {
+            this.setImage(img1);
+        }
     }
-    public int getPoint(){
-        return this.point;
-    }
-    public void increaseHealth(){
-        this.health++;
-    }
-    public void decreaseHealth(){
-        this.health--;
-    }
-    public int getHealth(){
-        return this.health;
+    public void runLeftAnimation(){
+        this.setImage(img3);
+        if(System.nanoTime() % 400000000 > 200000000) {
+            this.setImage(img3);     
+        }
+        else {
+            this.setImage(img2);
+        }
     }
 }
