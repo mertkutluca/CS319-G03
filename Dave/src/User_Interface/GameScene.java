@@ -8,14 +8,26 @@ package User_Interface;
 import Entity_Objects.Player;
 import Game_Management.GameController;
 import Input_Management.InputManager;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+import javax.swing.JButton;
+import javax.swing.JPopupMenu;
 
 /**
  *
@@ -23,19 +35,40 @@ import javafx.stage.Stage;
  */
 public class GameScene extends Scene {
     
-    public GameScene(Group groupPane, Stage primaryStage) {
-	super(groupPane,640,480,Color.BLACK);
+    public GameScene(GridPane grid, Stage primaryStage) {
+	super(grid,800, 600,Color.BLACK);
                 
         GuiManager.gameController = new GameController();
         GuiManager.inputManager = new InputManager();
-        Canvas c = new Canvas(640,480);
-        groupPane.getChildren().add(c);
+        Canvas c = new Canvas(800,600);
+        grid.getChildren().add(c);
         GraphicsContext g = c.getGraphicsContext2D();
-        GuiManager.gameController.fillList();
+        GuiManager.gameController.fillList();  
+        
+        
+        Button pauseBut = new Button("P");
+        pauseBut.setLayoutY(10.0);
+        pauseBut.setLayoutX(780);
+        //pauseBut.autosize();
+        grid.getChildren().add(pauseBut);
+        
+   
+      
+        pauseBut.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+               primaryStage.setScene(GuiManager.pauseMenu); 
+                
+               }
+        });
+        
+         
+                
+        
         GuiManager.animationTimer = new AnimationTimer()
         {
             double frameTime = 0;
             long oldFrameTime = System.nanoTime();
+            
             @Override
             public void handle(long currentNanoTime)
             {
@@ -50,7 +83,7 @@ public class GameScene extends Scene {
 		}                
                 GuiManager.gameController.handleCollisions(); 
                 oldFrameTime = System.nanoTime();
-                //System.out.println(GuiManager.gameController.gameObjectList.size());
+                System.out.println(GuiManager.gameController.gameObjectList.size());
             }
         };
     }
