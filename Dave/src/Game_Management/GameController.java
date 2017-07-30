@@ -13,6 +13,8 @@ import Entity_Objects.Coin;
 import Entity_Objects.Diamond;
 import Entity_Objects.Door;
 import Entity_Objects.DynamicGameObject;
+import Entity_Objects.Enemy;
+import Entity_Objects.EnemywithBlade;
 import Entity_Objects.GameObject;
 import Entity_Objects.Gun;
 import Entity_Objects.Heart;
@@ -98,7 +100,8 @@ public class GameController {
     	}else if(key=='e'){
     		return null;
     	}else if(key=='f'){
-    		return null;
+    		      EnemywithBlade ewb = new EnemywithBlade(x*64, y*64, "/enemywithbladedef.png");
+    		return ewb;
     	}else if(key=='g'){
     		return null;
     	}else if(key=='h'){
@@ -115,6 +118,9 @@ public class GameController {
                 ((Player)gameObjectList.get(i)).move(pressedButtonsList);
                 p1 = i;
             }
+            if (gameObjectList.get(i) instanceof EnemywithBlade) {
+                ((EnemywithBlade)gameObjectList.get(i)).move("LRLLRJRJLLR");
+            }
             if (gameObjectList.get(i) instanceof Bullet) {
                 ((Bullet)gameObjectList.get(i)).move(((Bullet)gameObjectList.get(i)).getDirection());
             }
@@ -124,7 +130,7 @@ public class GameController {
     public void slideMap(double direction) {
         for (int i = 0; i < gameObjectList.size(); i++) {
             if (!(gameObjectList.get(i) instanceof Player)) {
-                if(gameObjectList.get(i) instanceof Bullet){
+                if(gameObjectList.get(i) instanceof Bullet || gameObjectList.get(i) instanceof Enemy){
                     ((DynamicGameObject)gameObjectList.get(i)).posX += (5.0 * direction);
                 } else {
                     ((StaticGameObject)gameObjectList.get(i)).posX += (5.0 * direction);
@@ -138,6 +144,9 @@ public class GameController {
             for (int j = 0; j < gameObjectList.size(); j++) {
                 if (gameObjectList.get(i) instanceof DynamicGameObject && gameObjectList.get(j) instanceof StaticGameObject) {
                     checkCollision((DynamicGameObject)gameObjectList.get(i),(StaticGameObject)gameObjectList.get(j));
+                }
+                if (gameObjectList.get(i) instanceof Player && gameObjectList.get(j) instanceof Enemy) {
+                    fight((Player)gameObjectList.get(i),(Enemy)gameObjectList.get(j));
                 }
             }
         }
@@ -243,5 +252,20 @@ public class GameController {
                 }
             }
         }
-    }   
+    }
+    
+    public void fight(DynamicGameObject obj1, Enemy obj2) {
+        if(obj1.getPosY() - obj2.getPosY() < 63 && -63 < obj1.getPosY() - obj2.getPosY()){
+            if(obj1.getPosX() - obj2.getPosX() < 64 && obj1.getPosX() - obj2.getPosX() > 0) {     
+                //obj1.setLeftCol(true);
+            }
+            if(obj2.getPosX() - obj1.getPosX() < 64 && obj2.getPosX() - obj1.getPosX() > 0) {
+                if (obj1 instanceof Player) {
+                    ((EnemywithBlade)obj2).swing();
+                    gameObjectList.remove(obj1);
+                }
+                //obj1.setRightCol(true);    
+            }
+        }
+    }
 }
