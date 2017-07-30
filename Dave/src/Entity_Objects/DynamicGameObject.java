@@ -27,16 +27,21 @@ public class DynamicGameObject extends GameObject {
     public void move(String pattern) {
         long oldTime = System.nanoTime();
         char dir = pattern.charAt(patternIndex % pattern.length());
-        if (dir == 'L')
+        if (dir == 'L' && !leftCol) {
             go_left();
-        if (dir == 'R')
+            rightCol = false;
+        }
+        if (dir == 'R' && !rightCol) {
             go_right();
+            leftCol = false;
+        }
         if (dir == 'J')
             setIsJumped(true);
         
-        if (System.nanoTime() > oldTime + 1000000000.0) {
+        if(System.nanoTime() % 400000000 > 200000000) {
             patternIndex++;
-            oldTime = System.nanoTime();
+            if(patternIndex == pattern.length())
+                patternIndex = 0;
         }
         
     }
