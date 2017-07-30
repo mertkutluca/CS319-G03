@@ -37,6 +37,7 @@ public class GuiManager extends Application {
         primaryStage.setTitle("More Dangerous Dave");
 	primaryStage.setResizable(false);
         
+        Group group = new Group();
         GridPane grid = new GridPane();
         GridPane grid2 = new GridPane();
         GridPane grid3 = new GridPane();
@@ -49,9 +50,6 @@ public class GuiManager extends Application {
 	mainMenu = new MainMenu(grid2,primaryStage);
         primaryStage.setScene(mainMenu);
       //  animationTimer.start();
-    	gameScene = new GameScene(grid,primaryStage);
-        primaryStage.setScene(gameScene);
-        animationTimer.start();
         primaryStage.show();
     }
 }
