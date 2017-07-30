@@ -47,17 +47,20 @@ public class GameController {
     }
     
     public GameObject createObject(char key, int y, int x){
-    	if(key==0){
+    	if(key=='0'){
     		return null;
     	}else if(key=='1'){
-        	StaticGameObject gameObject = new StaticGameObject(x*64, y*64, "/brick.png");
-        	return gameObject;
-    	}else if(key==2){
-    		return null;
-    	}else if(key==3){
-    		return null;
-    	}else if(key==4){
-    		return null;
+        	Brick brick = new Brick(x*64, y*64, "/brick.png");
+        	return brick;
+    	}else if(key=='2'){
+    		PoisonedBrick pBrick= new PoisonedBrick(x*64,y*64,"/brick.png");
+    		return pBrick;
+    	}else if(key=='3'){
+    		PoisonedSeaweed seaweed=new PoisonedSeaweed(x*64,y*64,"/brick.png");
+    		return seaweed;
+    	}else if(key=='4'){
+    		Door door=new Door(x*64,y*64,"/brick.png");
+    		return door;
     	}else if(key==5){
     		return null;
     	}else if(key==6){
