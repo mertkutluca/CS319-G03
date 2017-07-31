@@ -38,19 +38,22 @@ public class Player extends DynamicGameObject {
     }
     
     public void move(ArrayList<String> keyList){  
-        if(!bottomCol){    
+         if(!bottomCol){    
             speedY = speedY + 0.25;
         }
         if(keyList.contains("RIGHT") && !rightCol){
-            //go_right();
-            GuiManager.gameController.slideMap(-1.0);
+             if(GuiManager.gameController.getMulti())
+                go_right();
+            else
+                GuiManager.gameController.slideMap(-1.0);
             this.setPlayerDirection("RIGHT");
         }
         else if(keyList.contains("LEFT") && !leftCol){
-            //go_left();
             this.setPlayerDirection("LEFT");
-            GuiManager.gameController.slideMap(1.0);
-            //rightCol = false;
+            if(GuiManager.gameController.getMulti()) 
+                go_left();
+            else
+                GuiManager.gameController.slideMap(1.0);
         }
         else{}
         if(keyList.contains("RIGHT")){
@@ -75,9 +78,9 @@ public class Player extends DynamicGameObject {
         if(keyList.contains("SPACE")) {
             if (gun != null) {
                 if(this.getDirection() == "LEFT")
-                    gun.shoot(this.getPosX()-65,this.getPosY(),(this.getDirection()).substring(0,1));
+                    gun.shoot(this.getPosX()-65,this.getPosY() - 10,(this.getDirection()).substring(0,1));
                 else
-                    gun.shoot(this.getPosX()+65,this.getPosY(),(this.getDirection()).substring(0,1));
+                    gun.shoot(this.getPosX()+65,this.getPosY() - 5,(this.getDirection()).substring(0,1));
             }
         }
         else {
@@ -89,7 +92,6 @@ public class Player extends DynamicGameObject {
         this.setRightCol(false);
         this.setLeftCol(false);
         
-        handle_bounds();
     }
 
     /**

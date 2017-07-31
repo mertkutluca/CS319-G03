@@ -11,6 +11,7 @@ import Entity_Objects.Brick;
 import Entity_Objects.Bullet;
 import Entity_Objects.Chalice;
 import Entity_Objects.Coin;
+import Entity_Objects.Davy;
 import Entity_Objects.Diamond;
 import Entity_Objects.Door;
 import Entity_Objects.DynamicGameObject;
@@ -27,7 +28,10 @@ import Entity_Objects.PoisonedSeaweed;
 import Entity_Objects.StaticGameObject;
 import File_Management.FileManager;
 import User_Interface.GuiManager;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -38,13 +42,17 @@ public class GameController {
     public ArrayList<String> pressedButtonsList;
     private static GameController gameController;
     private char[][] objectKeys;
+    public boolean multi = false;
     
     public GameController(){
         gameObjectList = new ArrayList<>();
         pressedButtonsList = new ArrayList<>();
         GuiManager.fileManager=new FileManager(9,50);
         objectKeys=new char[9][50];
-        GuiManager.fileManager.readMapFile("src/MapObjects1.txt");
+    }
+    
+    public void readMap(String I){
+        GuiManager.fileManager.readMapFile(I);
         objectKeys=GuiManager.fileManager.getMapObjects();
     }
     
@@ -86,8 +94,9 @@ public class GameController {
     	}else if(key=='8'){
                 Heart gameObject = new Heart(x*64,y*64,"/heart.png");
     		return gameObject;
-    	}else if(key==9){
-    		return null;
+    	}else if(key=='9'){
+    		Davy davy = new Davy(x*64, y*64, "/dave_left.png");
+    		return davy;
     	}else if(key=='a'){
     		JetPack gameObject = new JetPack(x*64, y*64, "/jetPack.png");
                 return gameObject;
@@ -123,10 +132,15 @@ public class GameController {
     
     public void moveAllObjects() {
         int p1 = 0;
+        int d1 = 0;
         for (int i = 0; i < gameObjectList.size(); i++) {
             if (gameObjectList.get(i) instanceof Player) {
                 ((Player)gameObjectList.get(i)).move(pressedButtonsList);
                 p1 = i;
+            }
+            if (gameObjectList.get(i) instanceof Davy) {
+                ((Davy)gameObjectList.get(i)).move(pressedButtonsList);
+                d1 = i;
             }
             if (gameObjectList.get(i) instanceof Enemy) {
                 ((Enemy)gameObjectList.get(i)).move("RLJJLRRLJRLR");
@@ -138,9 +152,9 @@ public class GameController {
     }
     
     public void slideMap(double direction) {
-        for (int i = 0; i < gameObjectList.size(); i++) {
+         for (int i = 0; i < gameObjectList.size(); i++) {
             if (!(gameObjectList.get(i) instanceof Player)) {
-                if(gameObjectList.get(i) instanceof Bullet || gameObjectList.get(i) instanceof Enemy){
+                if(gameObjectList.get(i) instanceof Bullet || gameObjectList.get(i) instanceof Enemy || gameObjectList.get(i) instanceof Davy){
                     ((DynamicGameObject)gameObjectList.get(i)).posX += (5.0 * direction);
                 } else {
                     ((StaticGameObject)gameObjectList.get(i)).posX += (5.0 * direction);
@@ -173,6 +187,9 @@ public class GameController {
                 if (obj2 instanceof Gun  && obj1 instanceof Player) {
                     ((Player)obj1 ).gun = (Gun)obj2;
                     gameObjectList.remove(obj2);
+                } else if (obj2 instanceof Gun && obj1 instanceof Davy) {
+                    ((Davy)obj1 ).gun = (Gun)obj2;
+                    gameObjectList.remove(obj2);
                 } else if (obj1 instanceof Bullet){
                     gameObjectList.remove(obj1);
                 } else if(obj2 instanceof Coin && obj1 instanceof Player){
@@ -201,6 +218,13 @@ public class GameController {
                 } else if (obj2 instanceof Door) {
                     if (((Door)(obj2)).getEnabled()){
                         int score = ((Player)obj1).getPoint();
+                        
+                        try {
+                            GuiManager.fileManager.addScore("src/HighScore.txt", score);
+                        } catch (FileNotFoundException ex) {
+                            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        
                         gameObjectList.clear();
                         GuiManager.fileManager.readMapFile("src/MapObjects2.txt");
                         this.objectKeys = GuiManager.fileManager.getMapObjects();
@@ -210,9 +234,12 @@ public class GameController {
                                 ((Player)(gameObjectList.get(i))).increasePoint(score);
                         }
                     }
-                } else if (obj2 instanceof JetPack) {
+                } else if (obj2 instanceof JetPack && obj1 instanceof Player) {
                     gameObjectList.remove(obj2);
                     ((Player)obj1).jetpack = ((JetPack)obj2);
+                } else if (obj2 instanceof JetPack && obj1 instanceof Davy) {
+                    gameObjectList.remove(obj2);
+                    ((Davy)obj1).jetpack = ((JetPack)obj2);
                 } else {
                     obj1.setLeftCol(true);
                 }
@@ -220,6 +247,9 @@ public class GameController {
             if(obj2.getPosX() - obj1.getPosX() < 64 && obj2.getPosX() - obj1.getPosX() > 0) {
                 if (obj2 instanceof Gun && obj1 instanceof Player) {
                     ((Player)obj1 ).gun = (Gun)obj2;
+                    gameObjectList.remove(obj2);
+                } else if (obj2 instanceof Gun && obj1 instanceof Davy) {
+                    ((Davy)obj1 ).gun = (Gun)obj2;
                     gameObjectList.remove(obj2);
                 } else if (obj1 instanceof Bullet){
                     gameObjectList.remove(obj1);
@@ -249,6 +279,11 @@ public class GameController {
                 } else if (obj2 instanceof Door) {
                     if (((Door)(obj2)).getEnabled()){
                         int score = ((Player)obj1).getPoint();
+                        try {
+                            GuiManager.fileManager.addScore("src/HighScore.txt", score);
+                        } catch (FileNotFoundException ex) {
+                            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         gameObjectList.clear();
                         GuiManager.fileManager.readMapFile("src/MapObjects2.txt");
                         this.objectKeys = GuiManager.fileManager.getMapObjects();
@@ -261,6 +296,9 @@ public class GameController {
                 } else if (obj2 instanceof JetPack && obj1 instanceof Player) {
                     gameObjectList.remove(obj2);
                     ((Player)obj1).jetpack = ((JetPack)obj2);
+                } else if (obj2 instanceof JetPack && obj1 instanceof Davy) {
+                    gameObjectList.remove(obj2);
+                    ((Davy)obj1).jetpack = ((JetPack)obj2);
                 } else {
                     obj1.setRightCol(true);
                 }
@@ -272,6 +310,9 @@ public class GameController {
                 if (obj2 instanceof Gun && obj1 instanceof Player) {
                     ((Player)obj1 ).gun = (Gun)obj2;
                     gameObjectList.remove(obj2);
+                } else if (obj2 instanceof Gun && obj1 instanceof Davy) {
+                    ((Davy)obj1 ).gun = (Gun)obj2;
+                    gameObjectList.remove(obj2);
                 } else if (obj1 instanceof Bullet){
                     gameObjectList.remove(obj1);
                 } else if(obj2 instanceof Coin && obj1 instanceof Player){
@@ -300,6 +341,11 @@ public class GameController {
                 } else if (obj2 instanceof Door) {
                     if (((Door)(obj2)).getEnabled()){
                         int score = ((Player)obj1).getPoint();
+                        try {
+                            GuiManager.fileManager.addScore("src/HighScore.txt", score);
+                        } catch (FileNotFoundException ex) {
+                            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         gameObjectList.clear();
                         GuiManager.fileManager.readMapFile("src/MapObjects2.txt");
                         this.objectKeys = GuiManager.fileManager.getMapObjects();
@@ -312,6 +358,9 @@ public class GameController {
                 } else if (obj2 instanceof JetPack && obj1 instanceof Player) {
                     gameObjectList.remove(obj2);
                     ((Player)obj1).jetpack = ((JetPack)obj2);
+                } else if (obj2 instanceof JetPack && obj1 instanceof Davy) {
+                    gameObjectList.remove(obj2);
+                    ((Davy)obj1).jetpack = ((JetPack)obj2);
                 } else {
                     obj1.setTopCol(true);
                     obj1.posY = obj2.posY + 64;
@@ -321,6 +370,9 @@ public class GameController {
                 if (obj2 instanceof Gun && obj1 instanceof Player) {
                     ((Player)obj1 ).gun = (Gun)obj2;
                     gameObjectList.remove(obj2);
+                } else if (obj2 instanceof Gun && obj1 instanceof Davy) {
+                    ((Davy)obj1 ).gun = (Gun)obj2;
+                    gameObjectList.remove(obj2);
                 } else if (obj1 instanceof Bullet){
                     gameObjectList.remove(obj1);
                 } else if(obj2 instanceof Coin && obj1 instanceof Player){
@@ -349,6 +401,11 @@ public class GameController {
                 } else if (obj2 instanceof Door) {
                     if (((Door)(obj2)).getEnabled()){
                         int score = ((Player)obj1).getPoint();
+                        try {
+                            GuiManager.fileManager.addScore("src/HighScore.txt", score);
+                        } catch (FileNotFoundException ex) {
+                            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         gameObjectList.clear();
                         GuiManager.fileManager.readMapFile("src/MapObjects2.txt");
                         this.objectKeys = GuiManager.fileManager.getMapObjects();
@@ -361,6 +418,9 @@ public class GameController {
                 } else if (obj2 instanceof JetPack && obj1 instanceof Player) {
                     gameObjectList.remove(obj2);
                     ((Player)obj1).jetpack = ((JetPack)obj2);
+                } else if (obj2 instanceof JetPack && obj1 instanceof Davy) {
+                    gameObjectList.remove(obj2);
+                    ((Davy)obj1).jetpack = ((JetPack)obj2);
                 } else {
                     obj1.setBottomCol(true);
                     obj1.setSpeedY(0.0);
@@ -398,10 +458,12 @@ public class GameController {
     public void checkBulletCollision (Bullet obj1, DynamicGameObject obj2) {
         if(obj1.getPosY() - obj2.getPosY() < 63 && -63 < obj1.getPosY() - obj2.getPosY()){
             if(obj1.getPosX() - obj2.getPosX() < 64 && obj1.getPosX() - obj2.getPosX() > 0) {
-                gameObjectList.remove(obj2);      
+                gameObjectList.remove(obj2);
+                gameObjectList.remove(obj1);
             }
             if(obj2.getPosX() - obj1.getPosX() < 64 && obj2.getPosX() - obj1.getPosX() > 0) {
-                gameObjectList.remove(obj2);      
+                gameObjectList.remove(obj2); 
+                gameObjectList.remove(obj1);
             }
         }
     }
@@ -439,5 +501,12 @@ public class GameController {
                 }
             }
         }
+    }
+    
+    public void setMulti(boolean multi){
+        this.multi = multi;
+    }
+    public boolean getMulti(){
+        return this.multi;
     }
 }

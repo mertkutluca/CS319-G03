@@ -84,7 +84,6 @@ public class GameScene extends Scene {
 		}                
                 GuiManager.gameController.handleCollisions(); 
                 oldFrameTime = System.nanoTime();
-                System.out.println(GuiManager.gameController.gameObjectList.size());
             }
         };
         

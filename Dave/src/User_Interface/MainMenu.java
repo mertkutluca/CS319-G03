@@ -26,6 +26,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 
+
 /**
  *
  * @author ahmetnamli
@@ -103,7 +104,7 @@ public class MainMenu extends Scene{
         
         highScore.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-               //primaryStage.setScene(GuiManager.highScore); 
+               primaryStage.setScene(GuiManager.highScore); 
                }
         });
         
