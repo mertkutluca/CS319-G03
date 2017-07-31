@@ -34,7 +34,7 @@ public class Help extends Scene {
         Label label = new Label();
         Button backBut = new Button("Back");
         
-      label.setText("For Single Player: \n"
+        label.setText("For Single Player: \n"
 				+ "press W-A-S-D to move the tank, press Left_Ctrl to shoot \n"
 				+ "For Multi Player: \n"
 				+ "press W-A-S-D to move the tank1, press Left_Ctrl to shoot \n"
@@ -44,17 +44,17 @@ public class Help extends Scene {
 				+ "press Q for sound on/off \n"
 				+ "press P to pause/continue the game");
       
-      backBut.setMaxWidth(Double.MAX_VALUE);
+        backBut.setMaxWidth(Double.MAX_VALUE);
       
-      backBut.setOnAction(new EventHandler<ActionEvent>() {
+        backBut.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-               primaryStage.setScene(GuiManager.mainMenu); 
-               }
+                primaryStage.setScene(GuiManager.mainMenu); 
+                      }
         });
       
-      grid.add(sceneTitle, 0, 0);
-      grid.add(label, 0, 1);
-      grid.add(backBut, 0, 5);
+        grid.add(sceneTitle, 0, 0);
+        grid.add(label, 0, 1);
+        grid.add(backBut, 0, 5);
         
     }
     
