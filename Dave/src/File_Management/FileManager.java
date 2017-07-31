@@ -112,7 +112,8 @@ public void addScore(String filepath,int score) throws FileNotFoundException{
     addHighScore(score);
     writeHighScores(filepath);
 }
-public ArrayList<Integer> getHighScores(){
+public ArrayList<Integer> getHighScores(String filepath){
+    readHighScore(filepath);
     return highScores;
 }
 public char[][] getMapObjects(){
