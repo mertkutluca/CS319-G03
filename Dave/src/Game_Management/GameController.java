@@ -6,6 +6,7 @@
 package Game_Management;
 
 import Entity_Objects.Blade;
+import Entity_Objects.Boss;
 import Entity_Objects.Brick;
 import Entity_Objects.Bullet;
 import Entity_Objects.Chalice;
@@ -15,16 +16,17 @@ import Entity_Objects.Door;
 import Entity_Objects.DynamicGameObject;
 import Entity_Objects.Enemy;
 import Entity_Objects.EnemywithBlade;
+import Entity_Objects.EnemywithGun;
 import Entity_Objects.GameObject;
 import Entity_Objects.Gun;
 import Entity_Objects.Heart;
+import Entity_Objects.JetPack;
 import Entity_Objects.ObtainableStaticGameObject;
 import Entity_Objects.Player;
 import Entity_Objects.PoisonedBrick;
 import Entity_Objects.PoisonedSeaweed;
 import Entity_Objects.StaticGameObject;
 import File_Management.FileManager;
-import User_Interface.GuiManager;
 import java.util.ArrayList;
 
 /**
