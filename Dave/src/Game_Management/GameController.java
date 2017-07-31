@@ -111,6 +111,11 @@ public class GameController {
     	}
     }
     
+    public void resetGame() {
+        gameObjectList.clear();
+        fillList();
+    }
+    
     public void moveAllObjects() {
         int p1 = 0;
         for (int i = 0; i < gameObjectList.size(); i++) {
