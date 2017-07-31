@@ -29,6 +29,7 @@ public class MainMenu extends Scene{
     public static GameController gameController;
     public static InputManager inputManager;
     public static MainMenu mainMenu;
+    public static PauseMenu pauseMenu;
     
     public MainMenu(GridPane grid, Stage primaryStage) {
         super(grid, 800, 600);
@@ -51,16 +52,22 @@ public class MainMenu extends Scene{
         help.setMaxWidth(Double.MAX_VALUE);
         credits.setMaxWidth(Double.MAX_VALUE);
         exit.setMaxWidth(Double.MAX_VALUE);
-        
-       // contGame.setOnAction(event -> continueGame());
-      
-        newGame.setOnAction(new EventHandler<ActionEvent>() {
+     
+        contGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                primaryStage.setScene(GuiManager.gameScene); 
                GuiManager.animationTimer.start();
                }
         });
-        //highScore.setOnAction(event -> highScore());
+        
+        newGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+               GuiManager.gameController.resetGame();
+               primaryStage.setScene(GuiManager.gameScene); 
+               GuiManager.animationTimer.start();
+               }
+        });
+        
         help.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                primaryStage.setScene(GuiManager.help); 
@@ -72,11 +79,11 @@ public class MainMenu extends Scene{
                primaryStage.setScene(GuiManager.credits); 
                }
         });
-        //credits.setOnAction(event -> credits());
+       
         exit.setOnAction(event -> System.exit(0));
         
         grid.add(sceneTitle,0,0);
-        grid.add(contGame,0,1);
+        grid.add(contGame,0,1);    
         grid.add(newGame,0,2);
         grid.add(highScore,0,3);
         grid.add(help,0,4);
