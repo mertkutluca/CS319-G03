@@ -73,34 +73,34 @@ public class GameController {
     		Door door=new Door(x*64,y*64,"/brick.png");
     		return door;
     	}else if(key=='5'){
-                Coin gameObject = new Coin(x*64,y*64,"/coin.png");
+            Coin gameObject = new Coin(x*64,y*64,"/coin.png");
     		return gameObject;
     	}else if(key=='6'){
-                Diamond gameObject = new Diamond(x*64,y*64,"/diamond.png");
+            Diamond gameObject = new Diamond(x*64,y*64,"/diamond.png");
     		return gameObject;
     	}else if(key=='7'){
-                Chalice gameObject = new Chalice(x*64,y*64,"/chalice.png");
+            Chalice gameObject = new Chalice(x*64,y*64,"/chalice.png");
     		return gameObject;
     	}else if(key=='8'){
-                Heart gameObject = new Heart(x*64,y*64,"/heart.png");
+            Heart gameObject = new Heart(x*64,y*64,"/heart.png");
     		return gameObject;
     	}else if(key==9){
     		return null;
     	}else if(key=='a'){
     		return null;
     	}else if(key=='b'){
-    		 Gun gun = new Gun(x*64, y*64, "/gun.png");
-    		 return gun;
+    		Gun gun = new Gun(x*64, y*64, "/gun.png");
+    		return gun;
     	}else if(key=='c'){
     		Blade gameObject = new Blade(x*64,y*64,"/blade.png");
     		return gameObject;
     	}else if(key=='d'){
-    		 Player player = new Player(x*64, y*64, "/dave_right.png");
-    		 return player;
+    		Player player = new Player(x*64, y*64, "/dave_right.png");
+    		return player;
     	}else if(key=='e'){
     		return null;
     	}else if(key=='f'){
-    		      EnemywithBlade ewb = new EnemywithBlade(x*64, y*64, "/enemywithbladedef.png");
+    		EnemywithBlade ewb = new EnemywithBlade(x*64, y*64, "/enemywithbladedef.png");
     		return ewb;
     	}else if(key=='g'){
     		return null;
