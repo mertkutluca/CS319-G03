@@ -3,8 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ahmetnamli/Desktop/Proje/CS319-G03/Dave/src/User_Interface/GuiManager.java</file>
-            <file>file:/C:/Users/ahmetnamli/Desktop/Proje/CS319-G03/Dave/src/User_Interface/GameScene.java</file>
+            <file>file:/Users/emintosun/CS319-G03/Dave/src/Entity_Objects/MapObject.java</file>
+            <file>file:/Users/emintosun/CS319-G03/Dave/src/User_Interface/GuiManager.java</file>
+            <file>file:/Users/emintosun/CS319-G03/Dave/src/User_Interface/MainMenu.java</file>
+            <file>file:/Users/emintosun/CS319-G03/Dave/src/Game_Management/GameController.java</file>
+            <file>file:/Users/emintosun/CS319-G03/Dave/src/Entity_Objects/Gun.java</file>
+            <file>file:/Users/emintosun/CS319-G03/Dave/src/Entity_Objects/Blade.java</file>
+            <file>file:/Users/emintosun/CS319-G03/Dave/src/Entity_Objects/PoisonedSeaweed.java</file>
+            <file>file:/Users/emintosun/CS319-G03/Dave/src/User_Interface/GameScene.java</file>
+            <file>file:/Users/emintosun/CS319-G03/Dave/src/Entity_Objects/JetPack.java</file>
+            <file>file:/Users/emintosun/CS319-G03/Dave/src/Entity_Objects/Brick.java</file>
+            <file>file:/Users/emintosun/CS319-G03/Dave/src/MapObjects1.txt</file>
+            <file>file:/Users/emintosun/CS319-G03/Dave/src/Entity_Objects/Player.java</file>
         </group>
     </open-files>
 </project-private>

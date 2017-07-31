@@ -64,13 +64,13 @@ public class GameController {
         	Brick brick = new Brick(x*64, y*64, "/brick.png");
         	return brick;
     	}else if(key=='2'){
-    		PoisonedBrick pBrick= new PoisonedBrick(x*64,y*64,"/brick.png");
+    		PoisonedBrick pBrick= new PoisonedBrick(x*64,y*64,"/poisonedBrick.png");
     		return pBrick;
     	}else if(key=='3'){
-    		PoisonedSeaweed seaweed=new PoisonedSeaweed(x*64,y*64,"/brick.png");
+    		PoisonedSeaweed seaweed=new PoisonedSeaweed(x*64,y*64,"/poisonedSeaweed.png");
     		return seaweed;
     	}else if(key=='4'){
-    		Door door=new Door(x*64,y*64,"/brick.png");
+    		Door door=new Door(x*64,y*64,"/door.png");
     		return door;
     	}else if(key=='5'){
             Coin gameObject = new Coin(x*64,y*64,"/coin.png");
@@ -175,10 +175,28 @@ public class GameController {
                     ((Player)obj1).increaseHealth();
                 } else if(obj2 instanceof Chalice){
                     gameObjectList.remove(obj2);
-                    //doldur
+                    for(int i = 0; i<gameObjectList.size(); i++)
+                        if(gameObjectList.get(i) instanceof Door)
+                            ((Door)(gameObjectList.get(i))).setEnabled();
                 } else if (obj2 instanceof Blade) {
                     ((Player)obj1 ).blade = (Blade)obj2;
                     gameObjectList.remove(obj2);
+                } else if (obj2 instanceof PoisonedBrick) {
+                    gameObjectList.remove(obj1);
+                } else if (obj2 instanceof PoisonedSeaweed) {
+                    gameObjectList.remove(obj1);
+                } else if (obj2 instanceof Door) {
+                    if (((Door)(obj2)).getEnabled()){
+                        int score = ((Player)obj1).getPoint();
+                        gameObjectList.clear();
+                        filemanager.readMapFile("src/MapObjects1.txt");
+                        this.objectKeys = filemanager.getMapObjects();
+                        this.fillList();
+                        for(int i = 0; i<gameObjectList.size(); i++){
+                            if(gameObjectList.get(i) instanceof Player)
+                                ((Player)(gameObjectList.get(i))).increasePoint(score);
+                        }
+                    }
                 } else {
                     obj1.setLeftCol(true);
                 }
@@ -200,10 +218,28 @@ public class GameController {
                     ((Player)obj1).increaseHealth();
                 } else if(obj2 instanceof Chalice){
                     gameObjectList.remove(obj2);
-                    //doldur
+                    for(int i = 0; i<gameObjectList.size(); i++)
+                        if(gameObjectList.get(i) instanceof Door)
+                            ((Door)(gameObjectList.get(i))).setEnabled();
                 } else if (obj2 instanceof Blade) {
                     ((Player)obj1 ).blade = (Blade)obj2;
                     gameObjectList.remove(obj2);
+                } else if (obj2 instanceof PoisonedBrick) {
+                    gameObjectList.remove(obj1);
+                } else if (obj2 instanceof PoisonedSeaweed) {
+                    gameObjectList.remove(obj1);
+                } else if (obj2 instanceof Door) {
+                    if (((Door)(obj2)).getEnabled()){
+                        int score = ((Player)obj1).getPoint();
+                        gameObjectList.clear();
+                        filemanager.readMapFile("src/MapObjects1.txt");
+                        this.objectKeys = filemanager.getMapObjects();
+                        this.fillList();
+                        for(int i = 0; i<gameObjectList.size(); i++){
+                            if(gameObjectList.get(i) instanceof Player)
+                                ((Player)(gameObjectList.get(i))).increasePoint(score);
+                        }
+                    }
                 } else {
                     obj1.setRightCol(true);
                 }
@@ -223,10 +259,28 @@ public class GameController {
                     ((Player)obj1).increaseHealth();
                 } else if(obj2 instanceof Chalice){
                     gameObjectList.remove(obj2);
-                    //doldur
+                    for(int i = 0; i<gameObjectList.size(); i++)
+                        if(gameObjectList.get(i) instanceof Door)
+                            ((Door)(gameObjectList.get(i))).setEnabled();
                 } else if (obj2 instanceof Blade) {
                     ((Player)obj1 ).blade = (Blade)obj2;
                     gameObjectList.remove(obj2);
+                } else if (obj2 instanceof PoisonedBrick) {
+                    gameObjectList.remove(obj1);
+                } else if (obj2 instanceof PoisonedSeaweed) {
+                    gameObjectList.remove(obj1);
+                } else if (obj2 instanceof Door) {
+                    if (((Door)(obj2)).getEnabled()){
+                        int score = ((Player)obj1).getPoint();
+                        gameObjectList.clear();
+                        filemanager.readMapFile("src/MapObjects1.txt");
+                        this.objectKeys = filemanager.getMapObjects();
+                        this.fillList();
+                        for(int i = 0; i<gameObjectList.size(); i++){
+                            if(gameObjectList.get(i) instanceof Player)
+                                ((Player)(gameObjectList.get(i))).increasePoint(score);
+                        }
+                    }
                 } else {
                     //obj1.setLeftCol(true);
                     obj1.setTopCol(true);
@@ -245,10 +299,28 @@ public class GameController {
                     ((Player)obj1).increaseHealth();
                 } else if(obj2 instanceof Chalice){
                     gameObjectList.remove(obj2);
-                    //doldur
+                    for(int i = 0; i<gameObjectList.size(); i++)
+                        if(gameObjectList.get(i) instanceof Door)
+                            ((Door)(gameObjectList.get(i))).setEnabled();
                 } else if (obj2 instanceof Blade) {
                     ((Player)obj1 ).blade = (Blade)obj2;
                     gameObjectList.remove(obj2);
+                } else if (obj2 instanceof PoisonedBrick) {
+                    gameObjectList.remove(obj1);
+                } else if (obj2 instanceof PoisonedSeaweed) {
+                    gameObjectList.remove(obj1);
+                } else if (obj2 instanceof Door) {
+                    if (((Door)(obj2)).getEnabled()){
+                        int score = ((Player)obj1).getPoint();
+                        gameObjectList.clear();
+                        filemanager.readMapFile("src/MapObjects1.txt");
+                        this.objectKeys = filemanager.getMapObjects();
+                        this.fillList();
+                        for(int i = 0; i<gameObjectList.size(); i++){
+                            if(gameObjectList.get(i) instanceof Player)
+                                ((Player)(gameObjectList.get(i))).increasePoint(score);
+                        }
+                    }
                 } else {
                     obj1.setBottomCol(true);
                     obj1.setSpeedY(0.0);
@@ -263,6 +335,13 @@ public class GameController {
         if(obj1.getPosY() - obj2.getPosY() < 63 && -63 < obj1.getPosY() - obj2.getPosY()){
             if(obj1.getPosX() - obj2.getPosX() < 64 && obj1.getPosX() - obj2.getPosX() > 0) {     
                 //obj1.setLeftCol(true);
+                if (obj1 instanceof Bullet){
+                    gameObjectList.remove(obj2);
+                    for(int i = 0; i<gameObjectList.size(); i++){
+                        if(gameObjectList.get(i) instanceof Player)
+                            ((Player)(gameObjectList.get(i))).increasePoint(10);
+                    }
+                }
             }
             if(obj2.getPosX() - obj1.getPosX() < 64 && obj2.getPosX() - obj1.getPosX() > 0) {
                 if (obj1 instanceof Player) {
