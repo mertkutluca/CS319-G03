@@ -5,6 +5,7 @@
  */
 package User_Interface;
 
+import File_Management.FileManager;
 import Game_Management.GameController;
 import Input_Management.InputManager;
 import javafx.animation.AnimationTimer;
@@ -26,6 +27,8 @@ public class GuiManager extends Application {
     public static Help help;
     public static Credits credits;
     public static PauseMenu pauseMenu;
+    public static FileManager fileManager;
+    public static HighScore highScore;
     public static Group group = new Group();
     public static void main(String[] args) {
 	// TODO - implement GameApplication.main
@@ -42,6 +45,8 @@ public class GuiManager extends Application {
         GridPane grid3 = new GridPane();
         GridPane grid4 = new GridPane();
         GridPane grid5 = new GridPane();
+        GridPane grid = new GridPane();
+        highScore = new HighScore(grid, primaryStage);
         pauseMenu = new PauseMenu(grid5, primaryStage);
         credits = new Credits(grid4, primaryStage);
         help = new Help(grid3, primaryStage);
