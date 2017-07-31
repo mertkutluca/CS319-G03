@@ -74,6 +74,12 @@ public class MainMenu extends Scene{
                }
         });
         
+        highScore.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+               primaryStage.setScene(GuiManager.highScore); 
+               }
+        });
+        
           credits.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                primaryStage.setScene(GuiManager.credits); 
