@@ -34,7 +34,7 @@ public class Credits extends Scene {
         Label label = new Label();
         Button backBut = new Button("Back");
         
-      label.setText("Halil Selman Atmaca\n"
+      	label.setText("Halil Selman Atmaca\n"
 				+ "Mert Sebahattin Kutluca \n"
 				+ "Ahmet Namlı \n"
 				+ "Muhammed Emin Tosun");
