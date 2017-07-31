@@ -8,6 +8,7 @@ package User_Interface;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -25,7 +26,7 @@ public class PauseMenu extends Scene {
         super (grid,800,600);
         grid.setAlignment(Pos.CENTER);
         grid.setVgap(20);
-       
+           
         Text sceneTitle = new Text("Pause");
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         
@@ -41,7 +42,13 @@ public class PauseMenu extends Scene {
         mainMenu.setMaxWidth(Double.MAX_VALUE);
         exit.setMaxWidth(Double.MAX_VALUE);
         
-        
+        newGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+               GuiManager.gameController.resetGame();
+               primaryStage.setScene(GuiManager.gameScene); 
+               GuiManager.animationTimer.start();
+               }
+        });
         
         resume.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
@@ -70,8 +77,7 @@ public class PauseMenu extends Scene {
         grid.add(help,0,3);
         grid.add(mainMenu,0,4);
         grid.add(exit,0,6);
-        
-        
+            
     }
     
 }
