@@ -74,21 +74,22 @@ public class GameController {
     		Door door=new Door(x*64,y*64,"/door.png");
     		return door;
     	}else if(key=='5'){
-            Coin gameObject = new Coin(x*64,y*64,"/coin.png");
+                Coin gameObject = new Coin(x*64,y*64,"/coin.png");
     		return gameObject;
     	}else if(key=='6'){
-            Diamond gameObject = new Diamond(x*64,y*64,"/diamond.png");
+                Diamond gameObject = new Diamond(x*64,y*64,"/diamond.png");
     		return gameObject;
     	}else if(key=='7'){
-            Chalice gameObject = new Chalice(x*64,y*64,"/chalice.png");
+                Chalice gameObject = new Chalice(x*64,y*64,"/chalice.png");
     		return gameObject;
     	}else if(key=='8'){
-            Heart gameObject = new Heart(x*64,y*64,"/heart.png");
+                Heart gameObject = new Heart(x*64,y*64,"/heart.png");
     		return gameObject;
     	}else if(key==9){
     		return null;
     	}else if(key=='a'){
-    		return null;
+    		JetPack gameObject = new JetPack(x*64, y*64, "/jetPack.png");
+                return gameObject;
     	}else if(key=='b'){
     		Gun gun = new Gun(x*64, y*64, "/gun.png");
     		return gun;
@@ -104,9 +105,11 @@ public class GameController {
     		EnemywithBlade ewb = new EnemywithBlade(x*64, y*64, "/enemywithbladedef.png");
     		return ewb;
     	}else if(key=='g'){
-    		return null;
+    		EnemywithGun ewg = new EnemywithGun(x*64, y*64, "/enemywithgun.png");
+    		return ewg;
     	}else if(key=='h'){
-    		return null;
+    		Boss boss = new Boss(x*64, y*64, "/boss.png");
+    		return boss;
     	}else{
     		return null;
     	}
@@ -124,8 +127,8 @@ public class GameController {
                 ((Player)gameObjectList.get(i)).move(pressedButtonsList);
                 p1 = i;
             }
-            if (gameObjectList.get(i) instanceof EnemywithBlade) {
-                ((EnemywithBlade)gameObjectList.get(i)).move("LRLLRJRJLLR");
+            if (gameObjectList.get(i) instanceof Enemy) {
+                ((Enemy)gameObjectList.get(i)).move("RLJJLRRLJRLR");
             }
             if (gameObjectList.get(i) instanceof Bullet) {
                 ((Bullet)gameObjectList.get(i)).move(((Bullet)gameObjectList.get(i)).getDirection());
@@ -154,93 +157,109 @@ public class GameController {
                 if (gameObjectList.get(i) instanceof Player && gameObjectList.get(j) instanceof Enemy) {
                     fight((Player)gameObjectList.get(i),(Enemy)gameObjectList.get(j));
                 }
+                if (gameObjectList.get(i) instanceof Enemy && gameObjectList.get(j) instanceof Enemy) {
+                    checkEnemyCollision((Enemy)gameObjectList.get(i),(Enemy)gameObjectList.get(j));
+                }
+                if (gameObjectList.get(i) instanceof Bullet && gameObjectList.get(j) instanceof DynamicGameObject) {
+                    checkBulletCollision((Bullet)gameObjectList.get(i),(DynamicGameObject)gameObjectList.get(j));
+                }
             }
         }
     }
     public void checkCollision(DynamicGameObject obj1, StaticGameObject obj2){
         if(obj1.getPosY() - obj2.getPosY() < 63 && -63 < obj1.getPosY() - obj2.getPosY()){
             if(obj1.getPosX() - obj2.getPosX() < 64 && obj1.getPosX() - obj2.getPosX() > 0) {
-                if (obj2 instanceof Gun) {
+                if (obj2 instanceof Gun  && obj1 instanceof Player) {
                     ((Player)obj1 ).gun = (Gun)obj2;
                     gameObjectList.remove(obj2);
                 } else if (obj1 instanceof Bullet){
                     gameObjectList.remove(obj1);
-                } else if(obj2 instanceof Coin){
+                } else if(obj2 instanceof Coin && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
                     ((Player)obj1).increasePoint(((Coin)obj2).getPoint());
-                } else if(obj2 instanceof Diamond){
+                } else if(obj2 instanceof Diamond && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
                     ((Player)obj1).increasePoint(((Diamond)obj2).getPoint());
-                } else if(obj2 instanceof Heart){
+                } else if(obj2 instanceof Heart && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
                     ((Player)obj1).increaseHealth();
-                } else if(obj2 instanceof Chalice){
+                } else if(obj2 instanceof Chalice && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
-                    for(int i = 0; i<gameObjectList.size(); i++)
-                        if(gameObjectList.get(i) instanceof Door)
-                            ((Door)(gameObjectList.get(i))).setEnabled();
+                    for (int i = 0; i < gameObjectList.size(); i++) {
+                        if (gameObjectList.get(i) instanceof Door) {
+                            ((Door)gameObjectList.get(i)).setEnabled();
+                        }
+                    } 
                 } else if (obj2 instanceof Blade) {
                     ((Player)obj1 ).blade = (Blade)obj2;
                     gameObjectList.remove(obj2);
-                } else if (obj2 instanceof PoisonedBrick) {
+                } else if (obj2 instanceof PoisonedBrick && (obj1 instanceof Player)) {
                     gameObjectList.remove(obj1);
-                } else if (obj2 instanceof PoisonedSeaweed) {
+                } else if (obj2 instanceof PoisonedSeaweed && (obj1 instanceof Player)) {
                     gameObjectList.remove(obj1);
                 } else if (obj2 instanceof Door) {
                     if (((Door)(obj2)).getEnabled()){
                         int score = ((Player)obj1).getPoint();
                         gameObjectList.clear();
-                        GuiManager.fileManager.readMapFile("src/MapObjects1.txt");
-                        this.objectKeys = GuiManager.fileManager.getMapObjects();
+                        filemanager.readMapFile("src/MapObjects2.txt");
+                        this.objectKeys = filemanager.getMapObjects();
                         this.fillList();
                         for(int i = 0; i<gameObjectList.size(); i++){
                             if(gameObjectList.get(i) instanceof Player)
                                 ((Player)(gameObjectList.get(i))).increasePoint(score);
                         }
                     }
+                } else if (obj2 instanceof JetPack) {
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).jetpack = ((JetPack)obj2);
                 } else {
                     obj1.setLeftCol(true);
                 }
             }
             if(obj2.getPosX() - obj1.getPosX() < 64 && obj2.getPosX() - obj1.getPosX() > 0) {
-                if (obj2 instanceof Gun) {
+                if (obj2 instanceof Gun && obj1 instanceof Player) {
                     ((Player)obj1 ).gun = (Gun)obj2;
                     gameObjectList.remove(obj2);
                 } else if (obj1 instanceof Bullet){
                     gameObjectList.remove(obj1);
-                } else if(obj2 instanceof Coin){
+                } else if(obj2 instanceof Coin && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
                     ((Player)obj1).increasePoint(((Coin)obj2).getPoint());
-                } else if(obj2 instanceof Diamond){
+                } else if(obj2 instanceof Diamond && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
                     ((Player)obj1).increasePoint(((Diamond)obj2).getPoint());
-                } else if(obj2 instanceof Heart){
+                } else if(obj2 instanceof Heart && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
                     ((Player)obj1).increaseHealth();
-                } else if(obj2 instanceof Chalice){
+                } else if(obj2 instanceof Chalice && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
-                    for(int i = 0; i<gameObjectList.size(); i++)
-                        if(gameObjectList.get(i) instanceof Door)
-                            ((Door)(gameObjectList.get(i))).setEnabled();
+                    for (int i = 0; i < gameObjectList.size(); i++) {
+                        if (gameObjectList.get(i) instanceof Door) {
+                            ((Door)gameObjectList.get(i)).setEnabled();
+                        }
+                    }              
                 } else if (obj2 instanceof Blade) {
                     ((Player)obj1 ).blade = (Blade)obj2;
                     gameObjectList.remove(obj2);
-                } else if (obj2 instanceof PoisonedBrick) {
+                } else if (obj2 instanceof PoisonedBrick && (obj1 instanceof Player)) {
                     gameObjectList.remove(obj1);
-                } else if (obj2 instanceof PoisonedSeaweed) {
+                } else if (obj2 instanceof PoisonedSeaweed && (obj1 instanceof Player)) {
                     gameObjectList.remove(obj1);
                 } else if (obj2 instanceof Door) {
                     if (((Door)(obj2)).getEnabled()){
                         int score = ((Player)obj1).getPoint();
                         gameObjectList.clear();
-                        GuiManager.fileManager.readMapFile("src/MapObjects1.txt");
-                        this.objectKeys = GuiManager.fileManager.getMapObjects();
+                        filemanager.readMapFile("src/MapObjects2.txt");
+                        this.objectKeys = filemanager.getMapObjects();
                         this.fillList();
                         for(int i = 0; i<gameObjectList.size(); i++){
                             if(gameObjectList.get(i) instanceof Player)
                                 ((Player)(gameObjectList.get(i))).increasePoint(score);
                         }
                     }
+                } else if (obj2 instanceof JetPack && obj1 instanceof Player) {
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).jetpack = ((JetPack)obj2);
                 } else {
                     obj1.setRightCol(true);
                 }
@@ -249,79 +268,98 @@ public class GameController {
         
         if(obj1.getPosX() - obj2.getPosX() < 50 && -50 < obj1.getPosX() - obj2.getPosX()){
             if(obj1.getPosY() - obj2.getPosY() < 64 && obj1.getPosY() - obj2.getPosY() > 0){
-                if(obj2 instanceof Coin){
+                if (obj2 instanceof Gun && obj1 instanceof Player) {
+                    ((Player)obj1 ).gun = (Gun)obj2;
+                    gameObjectList.remove(obj2);
+                } else if (obj1 instanceof Bullet){
+                    gameObjectList.remove(obj1);
+                } else if(obj2 instanceof Coin && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
                     ((Player)obj1).increasePoint(((Coin)obj2).getPoint());
-                } else if(obj2 instanceof Diamond){
+                } else if(obj2 instanceof Diamond && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
                     ((Player)obj1).increasePoint(((Diamond)obj2).getPoint());
-                } else if(obj2 instanceof Heart){
+                } else if(obj2 instanceof Heart && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
                     ((Player)obj1).increaseHealth();
-                } else if(obj2 instanceof Chalice){
+                } else if(obj2 instanceof Chalice && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
-                    for(int i = 0; i<gameObjectList.size(); i++)
-                        if(gameObjectList.get(i) instanceof Door)
-                            ((Door)(gameObjectList.get(i))).setEnabled();
+                    for (int i = 0; i < gameObjectList.size(); i++) {
+                        if (gameObjectList.get(i) instanceof Door) {
+                            ((Door)gameObjectList.get(i)).setEnabled();
+                        }
+                    }
                 } else if (obj2 instanceof Blade) {
                     ((Player)obj1 ).blade = (Blade)obj2;
                     gameObjectList.remove(obj2);
-                } else if (obj2 instanceof PoisonedBrick) {
+                } else if (obj2 instanceof PoisonedBrick && (obj1 instanceof Player)) {
                     gameObjectList.remove(obj1);
-                } else if (obj2 instanceof PoisonedSeaweed) {
+                } else if (obj2 instanceof PoisonedSeaweed && (obj1 instanceof Player)) {
                     gameObjectList.remove(obj1);
                 } else if (obj2 instanceof Door) {
                     if (((Door)(obj2)).getEnabled()){
                         int score = ((Player)obj1).getPoint();
                         gameObjectList.clear();
-                        GuiManager.fileManager.readMapFile("src/MapObjects1.txt");
-                        this.objectKeys = GuiManager.fileManager.getMapObjects();
+                        filemanager.readMapFile("src/MapObjects2.txt");
+                        this.objectKeys = filemanager.getMapObjects();
                         this.fillList();
                         for(int i = 0; i<gameObjectList.size(); i++){
                             if(gameObjectList.get(i) instanceof Player)
                                 ((Player)(gameObjectList.get(i))).increasePoint(score);
                         }
                     }
+                } else if (obj2 instanceof JetPack && obj1 instanceof Player) {
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).jetpack = ((JetPack)obj2);
                 } else {
-                    //obj1.setLeftCol(true);
                     obj1.setTopCol(true);
                     obj1.posY = obj2.posY + 64;
                 }
             }               
             if(obj2.getPosY() - obj1.getPosY() < 68 && obj2.getPosY() - obj1.getPosY() > 0){
-                if(obj2 instanceof Coin){
+                if (obj2 instanceof Gun && obj1 instanceof Player) {
+                    ((Player)obj1 ).gun = (Gun)obj2;
+                    gameObjectList.remove(obj2);
+                } else if (obj1 instanceof Bullet){
+                    gameObjectList.remove(obj1);
+                } else if(obj2 instanceof Coin && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
                     ((Player)obj1).increasePoint(((Coin)obj2).getPoint());
-                } else if(obj2 instanceof Diamond){
+                } else if(obj2 instanceof Diamond && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
                     ((Player)obj1).increasePoint(((Diamond)obj2).getPoint());
-                } else if(obj2 instanceof Heart){
+                } else if(obj2 instanceof Heart && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
                     ((Player)obj1).increaseHealth();
-                } else if(obj2 instanceof Chalice){
+                } else if(obj2 instanceof Chalice && obj1 instanceof Player){
                     gameObjectList.remove(obj2);
-                    for(int i = 0; i<gameObjectList.size(); i++)
-                        if(gameObjectList.get(i) instanceof Door)
-                            ((Door)(gameObjectList.get(i))).setEnabled();
+                    for (int i = 0; i < gameObjectList.size(); i++) {
+                        if (gameObjectList.get(i) instanceof Door) {
+                            ((Door)gameObjectList.get(i)).setEnabled();
+                        }
+                    }
                 } else if (obj2 instanceof Blade) {
                     ((Player)obj1 ).blade = (Blade)obj2;
                     gameObjectList.remove(obj2);
-                } else if (obj2 instanceof PoisonedBrick) {
+                } else if (obj2 instanceof PoisonedBrick && (obj1 instanceof Player)) {
                     gameObjectList.remove(obj1);
-                } else if (obj2 instanceof PoisonedSeaweed) {
+                } else if (obj2 instanceof PoisonedSeaweed && (obj1 instanceof Player)) {
                     gameObjectList.remove(obj1);
                 } else if (obj2 instanceof Door) {
                     if (((Door)(obj2)).getEnabled()){
                         int score = ((Player)obj1).getPoint();
                         gameObjectList.clear();
-                        GuiManager.fileManager.readMapFile("src/MapObjects1.txt");
-                        this.objectKeys = GuiManager.fileManager.getMapObjects();
+                        filemanager.readMapFile("src/MapObjects2.txt");
+                        this.objectKeys = filemanager.getMapObjects();
                         this.fillList();
                         for(int i = 0; i<gameObjectList.size(); i++){
                             if(gameObjectList.get(i) instanceof Player)
                                 ((Player)(gameObjectList.get(i))).increasePoint(score);
                         }
                     }
+                } else if (obj2 instanceof JetPack && obj1 instanceof Player) {
+                    gameObjectList.remove(obj2);
+                    ((Player)obj1).jetpack = ((JetPack)obj2);
                 } else {
                     obj1.setBottomCol(true);
                     obj1.setSpeedY(0.0);
@@ -332,24 +370,72 @@ public class GameController {
         }
     }
     
-    public void fight(DynamicGameObject obj1, Enemy obj2) {
+    public void checkEnemyCollision (Enemy obj1, Enemy obj2) {
         if(obj1.getPosY() - obj2.getPosY() < 63 && -63 < obj1.getPosY() - obj2.getPosY()){
-            if(obj1.getPosX() - obj2.getPosX() < 64 && obj1.getPosX() - obj2.getPosX() > 0) {     
-                //obj1.setLeftCol(true);
-                if (obj1 instanceof Bullet){
-                    gameObjectList.remove(obj2);
-                    for(int i = 0; i<gameObjectList.size(); i++){
-                        if(gameObjectList.get(i) instanceof Player)
-                            ((Player)(gameObjectList.get(i))).increasePoint(10);
-                    }
-                }
+            if(obj1.getPosX() - obj2.getPosX() < 64 && obj1.getPosX() - obj2.getPosX() > 0) {
+                obj1.setLeftCol(true);      
             }
             if(obj2.getPosX() - obj1.getPosX() < 64 && obj2.getPosX() - obj1.getPosX() > 0) {
-                if (obj1 instanceof Player) {
-                    ((EnemywithBlade)obj2).swing();
-                    gameObjectList.remove(obj1);
+                obj1.setRightCol(true);      
+            }
+        }
+        
+        if(obj1.getPosX() - obj2.getPosX() < 50 && -50 < obj1.getPosX() - obj2.getPosX()){
+            if(obj1.getPosY() - obj2.getPosY() < 64 && obj1.getPosY() - obj2.getPosY() > 0){
+                obj1.setTopCol(true);
+                obj1.posY = obj2.posY + 64;    
+            }               
+            if(obj2.getPosY() - obj1.getPosY() < 68 && obj2.getPosY() - obj1.getPosY() > 0){
+                obj1.setBottomCol(true);
+                obj1.setSpeedY(0.0);
+                obj1.setIsJumped(false);
+                obj1.posY = obj2.posY - 64;     
+            }
+        }
+    }
+    
+    public void checkBulletCollision (Bullet obj1, DynamicGameObject obj2) {
+        if(obj1.getPosY() - obj2.getPosY() < 63 && -63 < obj1.getPosY() - obj2.getPosY()){
+            if(obj1.getPosX() - obj2.getPosX() < 64 && obj1.getPosX() - obj2.getPosX() > 0) {
+                gameObjectList.remove(obj2);      
+            }
+            if(obj2.getPosX() - obj1.getPosX() < 64 && obj2.getPosX() - obj1.getPosX() > 0) {
+                gameObjectList.remove(obj2);      
+            }
+        }
+    }
+    
+    public void fight(DynamicGameObject obj1, Enemy obj2) {
+        if (obj2 instanceof EnemywithGun || obj2 instanceof Boss) {
+            if(obj1.getPosY() - obj2.getPosY() < 63 && -63 < obj1.getPosY() - obj2.getPosY()){
+                if(obj1.getPosX() - obj2.getPosX() < 64 && obj1.getPosX() - obj2.getPosX() > 0) {     
+                    //obj1.setLeftCol(true);
                 }
-                //obj1.setRightCol(true);    
+                if(obj2.getPosX() - obj1.getPosX() < 512 && obj2.getPosX() - obj1.getPosX() > 0) {
+                    if (obj2 instanceof EnemywithGun) {
+                        ((EnemywithGun)obj2).enemyShoot();
+                    } else if (obj2 instanceof Boss) {
+                        ((Boss)obj2).bossShoot();
+                    }
+                    //obj1.setRightCol(true);    
+                }
+            }
+        } else if (obj2 instanceof EnemywithBlade || obj2 instanceof Boss) {
+            if(obj1.getPosY() - obj2.getPosY() < 63 && -63 < obj1.getPosY() - obj2.getPosY()){
+                if(obj1.getPosX() - obj2.getPosX() < 64 && obj1.getPosX() - obj2.getPosX() > 0) {     
+                    //obj1.setLeftCol(true);
+                }
+                if(obj2.getPosX() - obj1.getPosX() < 64 && obj2.getPosX() - obj1.getPosX() > 0) {
+                    if (obj1 instanceof Player && obj2 instanceof EnemywithBlade) {
+                        ((EnemywithBlade)obj2).swing();
+                        gameObjectList.remove(obj1);
+                    }
+                    if (obj1 instanceof Player && obj2 instanceof Boss) {
+                        ((Boss)obj2).swing();
+                        gameObjectList.remove(obj1);
+                    }
+                    //obj1.setRightCol(true);    
+                }
             }
         }
     }
