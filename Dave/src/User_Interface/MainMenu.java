@@ -41,6 +41,7 @@ public class MainMenu extends Scene{
         
         Button contGame = new Button("Continue Game");
         Button newGame = new Button("New Game");
+        Button multiPlayer = new Button("MultiPlayer");
         Button highScore = new Button ("High Scores");
         Button help = new Button ("Help");
         Button credits = new Button ("Credits");
@@ -48,6 +49,7 @@ public class MainMenu extends Scene{
         
         contGame.setMaxWidth(Double.MAX_VALUE);
         newGame.setMaxWidth(Double.MAX_VALUE);
+        multiPlayer.setMaxWidth(Double.MAX_VALUE);
         highScore.setMaxWidth(Double.MAX_VALUE);
         help.setMaxWidth(Double.MAX_VALUE);
         credits.setMaxWidth(Double.MAX_VALUE);
@@ -56,14 +58,27 @@ public class MainMenu extends Scene{
         contGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                primaryStage.setScene(GuiManager.gameScene); 
+               GuiManager.gameController.setMulti(false);
                GuiManager.animationTimer.start();
                }
         });
         
         newGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
+               GuiManager.gameController.readMap("src/MapObjects1.txt");
                GuiManager.gameController.resetGame();
-               primaryStage.setScene(GuiManager.gameScene); 
+               GuiManager.gameController.setMulti(false);
+               primaryStage.setScene(GuiManager.gameScene);
+               GuiManager.animationTimer.start();
+               }
+        });
+        
+        multiPlayer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+               GuiManager.gameController.readMap("src/MultiMapObjects1.txt");
+               GuiManager.gameController.resetGame();
+               GuiManager.gameController.setMulti(true);
+               primaryStage.setScene(GuiManager.gameScene);
                GuiManager.animationTimer.start();
                }
         });
@@ -76,7 +91,7 @@ public class MainMenu extends Scene{
         
         highScore.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-               primaryStage.setScene(GuiManager.highScore); 
+               //primaryStage.setScene(GuiManager.highScore); 
                }
         });
         
@@ -91,13 +106,11 @@ public class MainMenu extends Scene{
         grid.add(sceneTitle,0,0);
         grid.add(contGame,0,1);    
         grid.add(newGame,0,2);
-        grid.add(highScore,0,3);
-        grid.add(help,0,4);
-        grid.add(credits,0,5);
-        grid.add(exit,0,6);
+        grid.add(multiPlayer,0,3);
+        grid.add(highScore,0,4);
+        grid.add(help,0,5);
+        grid.add(credits,0,6);
+        grid.add(exit,0,7);
         
-    }
-
-   
-    
+    }   
 }
