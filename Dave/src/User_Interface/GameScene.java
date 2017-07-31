@@ -21,8 +21,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -34,17 +37,25 @@ import javax.swing.JPopupMenu;
  * @author Sebahattin
  */
 public class GameScene extends Scene {
-    
-    public GameScene(GridPane grid, Stage primaryStage) {
-	super(grid,800, 600,Color.BLACK);
+   
+    public GameScene(Group group, Stage primaryStage) {
+	super(group,800, 600,Color.BLACK);
                 
         GuiManager.gameController = new GameController();
         GuiManager.inputManager = new InputManager();
         Canvas c = new Canvas(800,600);
-        grid.getChildren().add(c);
+        group.getChildren().add(c);
         GraphicsContext g = c.getGraphicsContext2D();
         GuiManager.gameController.fillList();  
         
+        Label point = new Label();
+        point.setFont(Font.font("Tahoma", FontWeight.MEDIUM, 20));
+        point.setTextFill(Color.LIME);
+        point.setLayoutX(350);
+        point.autosize();
+        group.getChildren().add(point);
+       
+         
         GuiManager.animationTimer = new AnimationTimer()
         {
             double frameTime = 0;
@@ -56,6 +67,11 @@ public class GameScene extends Scene {
                 if(GuiManager.gameController.pressedButtonsList.contains("P")){
                      primaryStage.setScene(GuiManager.pauseMenu);
                      GuiManager.gameController.pressedButtonsList.remove("P");
+                }
+                for(int i = 0; i < GuiManager.gameController.gameObjectList.size(); i++){
+                         if(GuiManager.gameController.gameObjectList.get(i) instanceof Player){
+                             point.setText("Score: " + ((Player)(GuiManager.gameController.gameObjectList.get(i))).getPoint());
+                         }
                 }
                 g.setFill(Color.BLACK);
                 g.fillRect(0, 0, c.getWidth(), c.getHeight());
@@ -71,11 +87,12 @@ public class GameScene extends Scene {
                 System.out.println(GuiManager.gameController.gameObjectList.size());
             }
         };
+        
     }
     public void drawAll(GraphicsContext g) {
         for (int i = 0; i < GuiManager.gameController.gameObjectList.size(); i++){
             g.drawImage(GuiManager.gameController.gameObjectList.get(i).getImage(), GuiManager.gameController.gameObjectList.get(i).getPosX(), GuiManager.gameController.gameObjectList.get(i).getPosY());
         }
     }
-    
+
 }
