@@ -21,12 +21,12 @@ import Entity_Objects.GameObject;
 import Entity_Objects.Gun;
 import Entity_Objects.Heart;
 import Entity_Objects.JetPack;
-import Entity_Objects.ObtainableStaticGameObject;
 import Entity_Objects.Player;
 import Entity_Objects.PoisonedBrick;
 import Entity_Objects.PoisonedSeaweed;
 import Entity_Objects.StaticGameObject;
 import File_Management.FileManager;
+import User_Interface.GuiManager;
 import java.util.ArrayList;
 
 /**
@@ -38,7 +38,6 @@ public class GameController {
     public ArrayList<String> pressedButtonsList;
     private static GameController gameController;
     private char[][] objectKeys;
-    public GuiManager guiManager;
     
     public GameController(){
         gameObjectList = new ArrayList<>();
@@ -203,8 +202,8 @@ public class GameController {
                     if (((Door)(obj2)).getEnabled()){
                         int score = ((Player)obj1).getPoint();
                         gameObjectList.clear();
-                        filemanager.readMapFile("src/MapObjects2.txt");
-                        this.objectKeys = filemanager.getMapObjects();
+                        GuiManager.fileManager.readMapFile("src/MapObjects2.txt");
+                        this.objectKeys = GuiManager.fileManager.getMapObjects();
                         this.fillList();
                         for(int i = 0; i<gameObjectList.size(); i++){
                             if(gameObjectList.get(i) instanceof Player)
@@ -251,8 +250,8 @@ public class GameController {
                     if (((Door)(obj2)).getEnabled()){
                         int score = ((Player)obj1).getPoint();
                         gameObjectList.clear();
-                        filemanager.readMapFile("src/MapObjects2.txt");
-                        this.objectKeys = filemanager.getMapObjects();
+                        GuiManager.fileManager.readMapFile("src/MapObjects2.txt");
+                        this.objectKeys = GuiManager.fileManager.getMapObjects();
                         this.fillList();
                         for(int i = 0; i<gameObjectList.size(); i++){
                             if(gameObjectList.get(i) instanceof Player)
@@ -302,8 +301,8 @@ public class GameController {
                     if (((Door)(obj2)).getEnabled()){
                         int score = ((Player)obj1).getPoint();
                         gameObjectList.clear();
-                        filemanager.readMapFile("src/MapObjects2.txt");
-                        this.objectKeys = filemanager.getMapObjects();
+                        GuiManager.fileManager.readMapFile("src/MapObjects2.txt");
+                        this.objectKeys = GuiManager.fileManager.getMapObjects();
                         this.fillList();
                         for(int i = 0; i<gameObjectList.size(); i++){
                             if(gameObjectList.get(i) instanceof Player)
@@ -351,8 +350,8 @@ public class GameController {
                     if (((Door)(obj2)).getEnabled()){
                         int score = ((Player)obj1).getPoint();
                         gameObjectList.clear();
-                        filemanager.readMapFile("src/MapObjects2.txt");
-                        this.objectKeys = filemanager.getMapObjects();
+                        GuiManager.fileManager.readMapFile("src/MapObjects2.txt");
+                        this.objectKeys = GuiManager.fileManager.getMapObjects();
                         this.fillList();
                         for(int i = 0; i<gameObjectList.size(); i++){
                             if(gameObjectList.get(i) instanceof Player)
