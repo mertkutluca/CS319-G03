@@ -25,6 +25,9 @@ public class DynamicGameObject extends GameObject {
     }
     
     public void move(String pattern) {
+        if(!bottomCol && !(this instanceof Bullet)){    
+            speedY = speedY + 0.25;
+        }
         long oldTime = System.nanoTime();
         char dir = pattern.charAt(patternIndex % pattern.length());
         if (dir == 'L' && !leftCol) {
@@ -35,15 +38,30 @@ public class DynamicGameObject extends GameObject {
             go_right();
             leftCol = false;
         }
-        if (dir == 'J')
-            setIsJumped(true);
-        
-        if(System.nanoTime() % 400000000 > 200000000) {
-            patternIndex++;
-            if(patternIndex == pattern.length())
-                patternIndex = 0;
+        if (dir == 'J' && !isJumped) {
+            bottomCol = false;
+            speedY = -7.0;
+            if (!(this instanceof Boss))
+                setIsJumped(true);
         }
+        if ((this instanceof Boss) && topCol) {
+            speedY = 15.0;
+            topCol = false;
+            rightCol = false;
+            leftCol = false;
+        }     
         
+        if(System.nanoTime() % 600000000 > 300000000) {
+            patternIndex++;
+            if(patternIndex == pattern.length()) {
+                patternIndex = 0;
+                if (this instanceof EnemywithGun)
+                    ((EnemywithGun)this).getGun().setIsAvailable(true);
+                if (this instanceof Boss)
+                    ((Boss)this).getGun().setIsAvailable(true);
+            }
+        }
+        posY += speedY;
     }
     public void handle_bounds(){
         if(posX > 640 )

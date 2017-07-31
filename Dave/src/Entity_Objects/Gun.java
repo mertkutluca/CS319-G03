@@ -16,24 +16,28 @@ public class Gun extends ObtainableStaticGameObject {
     
     ArrayList<Bullet> bullets;
     String bulletImagePath;
-    
+    private boolean isAvailable = true;
     public Gun(double X, double Y, String I) {
         super(X, Y, I);
         bullets = new ArrayList<>();
         this.bulletImagePath = "/bullet.png";
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < 5; i++)
             bullets.add(new Bullet(X,Y,"/bullet.png"));
     }
     
     public void shoot(double posX, double posY,String dir) {
-        if (!bullets.isEmpty()) {
+        if (!bullets.isEmpty() && isAvailable) {
             bullets.get(bullets.size()-1).setDirection(dir);
             (bullets.get(bullets.size()-1)).setPosX(posX);
             (bullets.get(bullets.size()-1)).setPosY(posY);
             GuiManager.gameController.gameObjectList.add(bullets.get(bullets.size()-1));
             bullets.remove(bullets.size()-1);
-            
+            isAvailable = false;
         }
+    }
+
+    public void setIsAvailable(boolean isAvailable) {
+        this.isAvailable = isAvailable;
     }
     
 }

@@ -16,7 +16,8 @@ import javafx.scene.image.Image;
 public class Player extends DynamicGameObject {
     
     public Gun gun;
-    Image img1, img2, img3, img4;
+    public JetPack jetpack;
+    Image img1, img2, img3, img4, imgJR, imgJL;
     String dir = "RIGHT";
     public int point;
     private int health;
@@ -32,6 +33,8 @@ public class Player extends DynamicGameObject {
         img2 = new Image("/dave_left.png");
         img3 = new Image("/leftruNer.png");
         img4 = new Image("/rightrun.png");
+        imgJR = new Image("/jetPackr.png");
+        imgJL = new Image("/jetPackl.png");
     }
     
     public void move(ArrayList<String> keyList){  
@@ -62,7 +65,8 @@ public class Player extends DynamicGameObject {
         }
         if(keyList.contains("UP") && !isJumped){
             speedY = -7.0;
-            isJumped = true;
+            if(jetpack == null)
+                isJumped = true;
         }
         if(topCol) {
             speedY = 0;
@@ -71,11 +75,14 @@ public class Player extends DynamicGameObject {
         if(keyList.contains("SPACE")) {
             if (gun != null) {
                 if(this.getDirection() == "LEFT")
-                    gun.shoot(this.getPosX()-45,this.getPosY(),(this.getDirection()).substring(0,1));
+                    gun.shoot(this.getPosX()-65,this.getPosY(),(this.getDirection()).substring(0,1));
                 else
-                    gun.shoot(this.getPosX()+45,this.getPosY(),(this.getDirection()).substring(0,1));
-                keyList.remove(0);
+                    gun.shoot(this.getPosX()+65,this.getPosY(),(this.getDirection()).substring(0,1));
             }
+        }
+        else {
+            if (gun != null)
+                gun.setIsAvailable(true);
         }
         posY += speedY;
         this.setBottomCol(false);
@@ -107,6 +114,8 @@ public class Player extends DynamicGameObject {
         else {
             this.setImage(img1);
         }
+        if(jetpack != null)
+            this.setImage(imgJR);
     }
     public void runLeftAnimation(){
         this.setImage(img3);
@@ -116,6 +125,8 @@ public class Player extends DynamicGameObject {
         else {
             this.setImage(img2);
         }
+        if(jetpack != null)
+            this.setImage(imgJL);
     }
     
     public String getDirection(){
@@ -135,5 +146,5 @@ public class Player extends DynamicGameObject {
     }
     public int getHealth(){
         return this.health;
-    }
+    }  
 }

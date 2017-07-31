@@ -16,6 +16,7 @@ public class Bullet extends DynamicGameObject {
     
     public Bullet(double X, double Y, String I) {
         super(X, Y, I);
+        this.speedX = 7.0;
     }
 
     public int getDamage() {

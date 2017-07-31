@@ -9,6 +9,10 @@ package Entity_Objects;
  *
  * @author emintosun
  */
-public class JetPack {
+public class JetPack extends ObtainableStaticGameObject {
+    
+    public JetPack(double X, double Y, String I) {
+        super(X, Y, I);
+    }
     
 }
