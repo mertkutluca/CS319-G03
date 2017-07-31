@@ -11,23 +11,28 @@ import javax.imageio.ImageIO;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
 
 public class FileManager {
-
-	private char[][] mapObjectList;
+	
+    private char[][] mapObjectList;
+    private ArrayList<Integer> highScores;
 public FileManager(int x, int y){
-	mapObjectList=new char[6][50];
+	mapObjectList=new char[9][50];
+        highScores=new ArrayList();
 }
 
 public void readMapFile(String filePath) {
 	FileReader fr;
     //Try-with-resource  
 	try(BufferedReader br = new BufferedReader(new FileReader(filePath))){
-		for(int i=0;i<6;i++){
+		for(int i=0;i<9;i++){
 			String str=br.readLine();
 			for(int j=0;j<50;j++){
 				 mapObjectList[i][j]=str.charAt(j);
