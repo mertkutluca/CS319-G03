@@ -40,15 +40,15 @@ public class GameController {
     public GameController(){
         gameObjectList = new ArrayList<>();
         pressedButtonsList = new ArrayList<>();
-        filemanager=new FileManager(6,50);
-        objectKeys=new char[6][50];
+        filemanager=new FileManager(9,50);
+        objectKeys=new char[9][50];
         filemanager.readMapFile("src/MapObjects1.txt");
         objectKeys=filemanager.getMapObjects();
     }
     
     public void fillList(){
         GameObject object;
-    	for(int i=0;i<6;i++){
+    	for(int i=0;i<9;i++){
     		for(int j=0;j<50;j++){
     			object=createObject((char)objectKeys[i][j],i,j);
     			if(object!=null)
