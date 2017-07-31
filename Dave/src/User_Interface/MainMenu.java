@@ -30,6 +30,7 @@ public class MainMenu extends Scene{
     public static InputManager inputManager;
     public static MainMenu mainMenu;
     public static PauseMenu pauseMenu;
+    Image mainImage;
     
     public MainMenu(GridPane grid, Stage primaryStage) {
         super(grid, 800, 600);
@@ -37,7 +38,11 @@ public class MainMenu extends Scene{
         grid.setVgap(20);
         
         Text sceneTitle = new Text ("More Dangerous Dave");
-        sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        sceneTitle.setFont(Font.font("Tahoma", FontWeight.BOLD, 30));
+        sceneTitle.setFill(Color.LIME);
+        
+        this.mainImage = new Image("/mainImage.png");
+        BackgroundImage main = new BackgroundImage(mainImage,BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT);
         
         Button contGame = new Button("Continue Game");
         Button newGame = new Button("New Game");
@@ -111,6 +116,7 @@ public class MainMenu extends Scene{
         grid.add(help,0,5);
         grid.add(credits,0,6);
         grid.add(exit,0,7);
+        grid.setBackground(new Background(main));
         
     }   
 }
